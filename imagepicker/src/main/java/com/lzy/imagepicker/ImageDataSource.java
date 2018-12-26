@@ -136,6 +136,8 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
         //回调接口，通知图片数据准备完成
         ImagePicker.getInstance().setImageFolders(imageFolders);
         loadedListener.onImagesLoaded(imageFolders);
+        loaderManager.destroyLoader(0);
+        loaderManager.destroyLoader(1);
     }
 
     @Override
