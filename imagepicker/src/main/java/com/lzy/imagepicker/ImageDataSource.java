@@ -40,6 +40,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
     private FragmentActivity activity;
     private OnImagesLoadedListener loadedListener;                     //图片加载完成的回调接口
     private ArrayList<ImageFolder> imageFolders = new ArrayList<>();   //所有的图片文件夹
+    private LoaderManager loaderManager;
 
     /**
      * @param activity       用于初始化LoaderManager，需要兼容到2.3
@@ -50,7 +51,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
         this.activity = activity;
         this.loadedListener = loadedListener;
 
-        LoaderManager loaderManager = activity.getSupportLoaderManager();
+        loaderManager = activity.getSupportLoaderManager();
         if (path == null) {
             loaderManager.initLoader(LOADER_ALL, null, this);//加载所有的图片
         } else {
@@ -136,8 +137,12 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
         //回调接口，通知图片数据准备完成
         ImagePicker.getInstance().setImageFolders(imageFolders);
         loadedListener.onImagesLoaded(imageFolders);
-        loaderManager.destroyLoader(0);
-        loaderManager.destroyLoader(1);
+        if(loaderManager!=null)
+        {
+            loaderManager.destroyLoader(0);
+            loaderManager.destroyLoader(1);
+        }
+       
     }
 
     @Override
